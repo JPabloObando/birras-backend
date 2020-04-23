@@ -1,0 +1,25 @@
+{
+  "name": "birras_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JPabloObando/backend_birras.git"
+  },
+  "author": "Pablo Obando",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JPabloObando/backend_birras/issues"
+  },
+  "homepage": "https://github.com/JPabloObando/backend_birras#readme",
+  "dependencies": {
+    "apollo-server": "^2.12.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^15.0.0"
+  }
+}
