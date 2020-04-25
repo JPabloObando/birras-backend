@@ -5,17 +5,18 @@ const {
 
 const register = async (parent, { input }, ctx, info) => {
   const { email, name, password } = input;
-
   const user = await ctx.db.query(
     'INSERT INTO "user"(email, name, password) VALUES ($1, $2, $3) RETURNING *',
     [email, name, md5(password)]
   );
-
   const tokens = createTokens(user.id);
 
   return { user, tokens };
 };
 
+const createBeer = async (parent, { input }, ctx, info) => {};
+
 module.exports = {
   register,
+  createBeer,
 };

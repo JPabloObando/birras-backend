@@ -10,13 +10,6 @@ const createTokens = (id) => ({
   }),
 });
 
-const setNewTokens = (res, id) => {
-  res.set("Access-Control-Expose-Headers", "token,refresh-token");
-  const { token, refreshToken } = createTokens(id);
-  res.set("token", token);
-  res.set("x-refresh-token", refreshToken);
-};
-
 const decodeToken = (value) => {
   try {
     return jsonwebtoken.verify(value, JWT_SECRET);
@@ -25,4 +18,4 @@ const decodeToken = (value) => {
   }
 };
 
-module.exports = { createTokens, setNewTokens, decodeToken };
+module.exports = { createTokens, decodeToken };

@@ -9,11 +9,31 @@ const login = async (parent, { email, password }, ctx, info) => {
     [email, md5(password)]
   );
 
-  const tokens = createTokens(user.id);
+  if (!user) {
+    throw new Error("Invalid Credentials");
+  }
 
+  const tokens = createTokens(user.id);
   return { user, tokens };
 };
 
+const me = async (parent, args, ctx, info) => {
+  if (!ctx.user) {
+    throw new Error("Unlogged user");
+  }
+
+  return ctx.user;
+};
+
+const beers = async (parent, args, ctx, info) =>
+  await ctx.db.query("SELECT * FROM beer;", null, false);
+
+const beer = async (parent, { id }, ctx, info) =>
+  await ctx.db.query("SELECT * FROM beer WHERE id = $1;", [id]);
+
 module.exports = {
   login,
+  me,
+  beers,
+  beer,
 };

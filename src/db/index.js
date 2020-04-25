@@ -6,10 +6,10 @@ const db = new Pool({
 });
 
 module.exports = {
-  query: (text, params) =>
+  query: (text, params, singleRow = true) =>
     db
       .query(text, params)
-      .then((res) => res.rows[0])
+      .then(({ rows }) => (singleRow ? rows[0] : rows))
       .catch((err) => {
         throw new Error(err.stack.replace("error: ", ""));
       }),
