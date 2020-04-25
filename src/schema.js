@@ -49,8 +49,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    register(input: UserInput!): SessionUser!
-    createBeer(input: BeerInput!): Beer!
+    register(user: UserInput!): SessionUser!
+    createBeer(beer: BeerInput!): Beer!
+    beerConsumption(id: ID!, amount: Int!): Int!
   }
 `;
 

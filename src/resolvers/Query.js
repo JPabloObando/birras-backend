@@ -29,7 +29,14 @@ const beers = async (parent, args, ctx, info) =>
   await ctx.db.query("SELECT * FROM beer;", null, false);
 
 const beer = async (parent, { id }, ctx, info) =>
-  await ctx.db.query("SELECT * FROM beer WHERE id = $1;", [id]);
+  await ctx.db.query(
+    `SELECT b.*, COALESCE(ub.consumption, 0) AS consumption FROM beer b
+  LEFT JOIN "user" u ON u.id = $1
+  LEFT JOIN users_beers ub ON b.id = ub.beer_id AND u.id = ub.user_id
+  WHERE b.id = $2;
+  `,
+    [ctx.user ? ctx.user.id : 0, id]
+  );
 
 module.exports = {
   login,

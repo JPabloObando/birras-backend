@@ -1,5 +1,5 @@
 const getUser = require("./getUser");
-const { decodeToken, setNewTokens } = require("./token");
+const { decodeToken, createTokens } = require("./token");
 
 const auth = async (req, res) => {
   const token = req.headers["token"];
@@ -14,7 +14,9 @@ const auth = async (req, res) => {
 
     if (!decoded) return null;
 
-    const { token: newToken, refreshToken: newRefreshToken } = createTokens(id);
+    const { token: newToken, refreshToken: newRefreshToken } = createTokens(
+      decoded.id
+    );
     res.set("Access-Control-Expose-Headers", "token,refresh-token");
     res.set("token", newToken);
     res.set("x-refresh-token", newRefreshToken);
