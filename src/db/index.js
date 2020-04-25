@@ -10,5 +10,7 @@ module.exports = {
     db
       .query(text, params)
       .then((res) => res.rows[0])
-      .catch((err) => null),
+      .catch((err) => {
+        throw new Error(err.stack.replace("error: ", ""));
+      }),
 };

@@ -1,11 +1,19 @@
-const test = async (parent, args, ctx, info) => {
-  const users = await ctx.db.query("SELECT * FROM public.user");
+const md5 = require("md5");
+const {
+  token: { createTokens },
+} = require("../utils");
 
-  console.log("users ", users);
+const login = async (parent, { email, password }, ctx, info) => {
+  const user = await ctx.db.query(
+    'SELECT * FROM "user" WHERE email = $1 AND password = $2;',
+    [email, md5(password)]
+  );
 
-  return "Here we going";
+  const tokens = createTokens(user.id);
+
+  return { user, tokens };
 };
 
 module.exports = {
-  test,
+  login,
 };
