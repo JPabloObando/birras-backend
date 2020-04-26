@@ -1,6 +1,12 @@
 const jsonwebtoken = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "development";
 
+/**
+ * @func createTokens
+ * @desc Create an object which has the new tokens
+ * @param {Int} id Id of the user that we wants to generate new tokens
+ * @returns {Object} New tokens
+ */
 const createTokens = (id) => ({
   token: jsonwebtoken.sign({ id }, JWT_SECRET, {
     expiresIn: "2h",
@@ -10,7 +16,13 @@ const createTokens = (id) => ({
   }),
 });
 
-const decodeToken = (value) => {
+/**
+ * @func decryptToken
+ * @desc Decrypt an JWT as string
+ * @param {String} value JWT
+ * @returns {String} Decoded payload
+ */
+const decryptToken = (value) => {
   try {
     return jsonwebtoken.verify(value, JWT_SECRET);
   } catch (error) {
@@ -18,4 +30,4 @@ const decodeToken = (value) => {
   }
 };
 
-module.exports = { createTokens, decodeToken };
+module.exports = { createTokens, decryptToken };

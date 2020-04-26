@@ -3,16 +3,16 @@ const {
   token: { createTokens },
 } = require("../utils");
 
-const register = async (parent, { input }, ctx, info) => {
-  const { email, name, password } = input;
-  const user = await ctx.db.query(
+const register = async (parent, { user }, ctx, info) => {
+  const { email, name, password } = user;
+  const newUser = await ctx.db.query(
     'INSERT INTO "user"(email, name, password) VALUES ($1, $2, $3) RETURNING *',
     [email, name, md5(password)]
   );
 
   const tokens = createTokens(user.id);
 
-  return { user, tokens };
+  return { user: newUser, tokens };
 };
 
 const createBeer = async (parent, { beer }, ctx, info) => {
