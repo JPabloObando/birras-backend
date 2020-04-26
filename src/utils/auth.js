@@ -28,10 +28,10 @@ const auth = async (req, res) => {
     );
     res.set("Access-Control-Expose-Headers", "token,refresh-token");
     res.set("token", newToken);
-    res.set("x-refresh-token", newRefreshToken);
+    res.set("refresh-token", newRefreshToken);
   }
 
-  const user = await getUser(weRefresh ? decodedToken.id : refreshToken.id);
+  const user = await getUser(weRefresh ? decodedRefresh.id : decodedToken.id);
   return user;
 };
 
