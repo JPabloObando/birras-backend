@@ -14,23 +14,24 @@ const auth = async (req, res) => {
 
   if (!token) return null;
 
-  let decoded = decryptToken(token);
+  const decodedToken = decryptToken(token);
+  const decodedRefresh = decryptToken(refreshToken);
 
-  if (!decoded) {
-    // token doesn't work
-    decoded = decryptToken(refreshToken);
+  if (!decodedToken && !decodedRefresh) return null;
 
-    if (!decoded) return null;
-    // refreshToken works, we'll to refresh the tokens
+  let weRefresh = false;
+
+  if (!decodedToken) {
+    weRefresh = true;
     const { token: newToken, refreshToken: newRefreshToken } = createTokens(
-      decoded.id
+      decodedRefresh.id
     );
     res.set("Access-Control-Expose-Headers", "token,refresh-token");
     res.set("token", newToken);
     res.set("x-refresh-token", newRefreshToken);
   }
 
-  const user = await getUser(decoded.id);
+  const user = await getUser(weRefresh ? decodedToken.id : refreshToken.id);
   return user;
 };
 
