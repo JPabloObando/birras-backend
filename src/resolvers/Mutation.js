@@ -30,9 +30,10 @@ const register = async (parent, { user }, ctx, info) => {
 
 const createBeer = async (parent, { beer }, ctx, info) => {
   const { percentage, brand, kind, image } = beer;
-  const beerExits = await ctx.db.query("SELECT * FROM beer WHERE brand = $1", [
-    brand,
-  ]);
+  const beerExits = await ctx.db.query(
+    "SELECT * FROM beer WHERE REPLACE(LOWER(brand), ' ', '') = $1",
+    [regEx.trimAndLowerCase(brand)]
+  );
 
   if (beerExits) {
     throw new Error("This beer has already been created, try another :)");

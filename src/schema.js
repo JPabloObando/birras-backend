@@ -143,6 +143,10 @@ const typeDefs = gql`
     if it is consulted by a registered user, it obtains the amount of beers it has consumed
     """
     beer(id: ID!): Beer
+    """
+    Service to obtain all beers of an specific kind
+    """
+    beersByKind(kind: String!): [Beer]!
   }
 
   type Mutation {

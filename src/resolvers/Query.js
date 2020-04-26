@@ -57,9 +57,21 @@ const beer = async (parent, { id }, ctx, info) =>
     [ctx.user && ctx.user.id, id]
   );
 
+const beersByKind = async (parent, { kind }, ctx, info) =>
+  await ctx.db.query(
+    `SELECT b.*, COALESCE(ub.consumption, 0) AS consumption FROM beer b
+  LEFT JOIN "user" u ON u.id = $1
+  LEFT JOIN users_beers ub ON b.id = ub.beer_id AND u.id = ub.user_id
+  WHERE REPLACE(LOWER(kind), ' ', '') = $2`,
+    // [ctx.user && ctx.user.id] If the user is logged in, we'll try to get his consumption of that beer
+    [ctx.user && ctx.user.id, regEx.trimAndLowerCase(kind)],
+    false
+  );
+
 module.exports = {
   login,
   me,
   beers,
   beer,
+  beersByKind,
 };
