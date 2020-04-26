@@ -7,11 +7,11 @@ const JWT_SECRET = process.env.JWT_SECRET || "development";
  * @param {Int} id Id of the user that we wants to generate new tokens
  * @returns {Object} New tokens
  */
-const createTokens = (id) => ({
-  token: jsonwebtoken.sign({ id }, JWT_SECRET, {
+const createTokens = (value) => ({
+  token: jsonwebtoken.sign({ id: value }, JWT_SECRET, {
     expiresIn: "2h",
   }),
-  refreshToken: jsonwebtoken.sign({ id }, JWT_SECRET, {
+  refreshToken: jsonwebtoken.sign({ id: value }, JWT_SECRET, {
     expiresIn: "10d",
   }),
 });
