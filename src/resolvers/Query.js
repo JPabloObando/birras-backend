@@ -6,8 +6,6 @@ const {
 } = require("../utils");
 
 const login = async (parent, { email, password }, ctx, info) => {
-  return { user: { name: "pillo" }, myBeers: [] };
-
   if (!regEx.correctFormEmail(email)) {
     throw new Error("Invalid email format :(");
   }
