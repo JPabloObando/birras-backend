@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+const bodyParser = require("body-parser");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
@@ -41,7 +42,6 @@ const context = async ({ req, res }) => {
  */
 const start = () => {
   const apollo = new ApolloServer({
-    path: "/",
     typeDefs,
     resolvers,
     context,
@@ -49,7 +49,8 @@ const start = () => {
     playground: true,
   });
 
-  apollo.applyMiddleware({ app });
+  app.use(bodyParser.json({ limit: "100mb" }));
+  apollo.applyMiddleware({ app, path: "/" });
 
   let server = null;
   if (config.ssl) {
@@ -64,7 +65,7 @@ const start = () => {
     server = http.createServer(app);
   }
 
-  server.listen({ port: process.env.PORT || 4000 }, () =>
+  server.listen({ port: port }, () =>
     console.log(`🚀 Server ready at ${config.url}`)
   );
 };
