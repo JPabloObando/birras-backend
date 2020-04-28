@@ -63,7 +63,7 @@ const start = () => {
     server = http.createServer(app);
   }
 
-  server.listen({ port: config.port }, () =>
+  server.listen({ port: process.env.PORT || 4000 }, () =>
     console.log(`🚀 Server ready at ${config.url}`)
   );
 };
