@@ -127,6 +127,10 @@ const typeDefs = gql`
 
   type Query {
     """
+    Service to know in which environment we are running
+    """
+    environment: String!
+    """
     Service that allows an user to log in
     """
     login(email: String!, password: String!): SessionUser!
@@ -144,7 +148,8 @@ const typeDefs = gql`
     """
     beer(id: ID!): Beer
     """
-    Service to obtain all beers of an specific kind
+    Service to obtain all beers of an specific kind,
+    if it is consulted by a registered user, it obtains the amount of beers it has consumed
     """
     beersByKind(kind: String!): [Beer]!
   }

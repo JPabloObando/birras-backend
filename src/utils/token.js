@@ -1,5 +1,5 @@
 const jsonwebtoken = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET || "development";
+const jwt_secret = process.env.jwt_secret || "development";
 
 /**
  * @func createTokens
@@ -8,10 +8,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "development";
  * @returns {Object} New tokens
  */
 const createTokens = (value) => ({
-  token: jsonwebtoken.sign({ id: value }, JWT_SECRET, {
+  token: jsonwebtoken.sign({ id: value }, jwt_secret, {
     expiresIn: "2h",
   }),
-  refreshToken: jsonwebtoken.sign({ id: value }, JWT_SECRET, {
+  refreshToken: jsonwebtoken.sign({ id: value }, jwt_secret, {
     expiresIn: "10d",
   }),
 });
@@ -24,7 +24,7 @@ const createTokens = (value) => ({
  */
 const decryptToken = (value) => {
   try {
-    return jsonwebtoken.verify(value, JWT_SECRET);
+    return jsonwebtoken.verify(value, jwt_secret);
   } catch (error) {
     return null;
   }
