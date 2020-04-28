@@ -127,6 +127,10 @@ const typeDefs = gql`
 
   type Query {
     """
+    Service to know in how environment we're running
+    """
+    environment: String!
+    """
     Service that allows an user to log in
     """
     login(email: String!, password: String!): SessionUser!

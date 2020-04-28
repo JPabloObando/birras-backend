@@ -5,6 +5,9 @@ const {
   getUser,
 } = require("../utils");
 
+const environment = (parent, args, ctx, info) =>
+  process.env.NODE_ENV === "production" ? "production" : "development";
+
 const login = async (parent, { email, password }, ctx, info) => {
   if (!regEx.correctFormEmail(email)) {
     throw new Error("Invalid email format :(");
@@ -69,6 +72,7 @@ const beersByKind = async (parent, { kind }, ctx, info) =>
   );
 
 module.exports = {
+  environment,
   login,
   me,
   beers,
