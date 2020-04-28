@@ -11,6 +11,7 @@ const apollo = new ApolloServer({
   resolvers,
   introspection: true,
   playground: true,
+  path: "/graphql",
 });
 
 const app = express();
