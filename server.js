@@ -41,7 +41,7 @@ const context = async ({ req, res }) => {
  * @desc Create an instance of ApolloServer and then will launch a web server
  */
 const start = () => {
-  const apollo = new ApolloServer({
+  const server = new ApolloServer({
     typeDefs,
     resolvers,
     context,
@@ -50,24 +50,9 @@ const start = () => {
   });
 
   app.use(bodyParser.json({ limit: "100mb" }));
-  apollo.applyMiddleware({ app, path: "/" });
+  server.applyMiddleware({ app, path: "/" });
 
-  let server = null;
-  if (config.ssl) {
-    server = https.createServer(
-      {
-        key: fs.readFileSync(`./ssl/server.key`),
-        cert: fs.readFileSync(`./ssl/server.crt`),
-      },
-      app
-    );
-  } else {
-    server = http.createServer(app);
-  }
-
-  server.listen({ port: port }, () =>
-    console.log(`🚀 Server ready at ${config.url}`)
-  );
+  app.listen({ port }, () => console.log("ready"));
 };
 
 start();
