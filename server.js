@@ -41,6 +41,7 @@ const context = async ({ req, res }) => {
  */
 const start = () => {
   const apollo = new ApolloServer({
+    path: "/",
     typeDefs,
     resolvers,
     context,
