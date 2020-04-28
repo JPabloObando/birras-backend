@@ -33,18 +33,13 @@ const apollo = new ApolloServer({
 const app = express();
 apollo.applyMiddleware({ app });
 
-let server = null;
-if (config.ssl) {
-  server = https.createServer(
-    {
-      key: fs.readFileSync(`./ssl/server.key`),
-      cert: fs.readFileSync(`./ssl/server.crt`),
-    },
-    app
-  );
-} else {
-  server = http.createServer(app);
-}
+server = https.createServer(
+  {
+    key: fs.readFileSync(`./ssl/server.key`),
+    cert: fs.readFileSync(`./ssl/server.crt`),
+  },
+  app
+);
 
 server.listen({ port: config.port }, () =>
   console.log(
