@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
-const app = express();
 const db = require("./src/db");
 const typeDefs = require("./src/schema");
 const resolvers = require("./src/resolvers");
@@ -41,7 +40,9 @@ const context = async ({ req, res }) => {
  * @desc Create an instance of ApolloServer and then will launch a web server
  */
 const start = () => {
-  const server = new ApolloServer({
+  const app = express();
+
+  const apollo = new ApolloServer({
     typeDefs,
     resolvers,
     context,
@@ -50,9 +51,24 @@ const start = () => {
   });
 
   app.use(bodyParser.json({ limit: "100mb" }));
-  server.applyMiddleware({ app, path: "/" });
+  apollo.applyMiddleware({ app, path: "/" });
 
-  app.listen({ port }, () => console.log("ready"));
+  let server = null;
+  if (config.ssl) {
+    server = https.createServer(
+      {
+        key: fs.readFileSync(`./ssl/server.key`),
+        cert: fs.readFileSync(`./ssl/server.crt`),
+      },
+      app
+    );
+  } else {
+    server = http.createServer(app);
+  }
+
+  server.listen({ port: config.port }, () =>
+    console.log(`🚀 Server ready at ${config.url}`)
+  );
 };
 
 start();
