@@ -1,10 +1,10 @@
-import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import typeDefs from "./src/schema";
-import resolvers from "./src/resolvers";
-import fs from "fs";
-import https from "https";
-import http from "http";
+const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
+const typeDefs = require("./src/schema");
+const resolvers = require("./src/resolvers");
+const fs = require("fs");
+const https = require("https");
+const http = require("http");
 
 const apollo = new ApolloServer({
   typeDefs,
