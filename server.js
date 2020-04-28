@@ -43,5 +43,5 @@ const sslServer = https
     app
   )
   .listen({ port: config.port }, function () {
-    console.log(`Ready`);
+    console.log(`Ready dudes`);
   });
