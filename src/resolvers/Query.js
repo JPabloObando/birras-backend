@@ -5,8 +5,7 @@ const {
   getUser,
 } = require("../utils");
 
-const environment = (parent, args, ctx, info) =>
-  process.env.NODE_ENV === "production" ? "production" : "development";
+const environment = () => process.env.NODE_ENV || "development";
 
 const login = async (parent, { email, password }, ctx, info) => {
   if (!regEx.correctFormEmail(email)) {

@@ -148,7 +148,8 @@ const typeDefs = gql`
     """
     beer(id: ID!): Beer
     """
-    Service to obtain all beers of an specific kind
+    Service to obtain all beers of an specific kind,
+    if it is consulted by a registered user, it obtains the amount of beers it has consumed
     """
     beersByKind(kind: String!): [Beer]!
   }
