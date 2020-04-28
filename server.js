@@ -23,29 +23,25 @@ const configurations = {
 const environment = process.env.NODE_ENV || "development";
 const config = configurations[environment];
 
-const apollo = new ApolloServer({
+const app = express();
+
+const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
   playground: true,
 });
 
-const app = express();
-apollo.applyMiddleware({ app });
+apolloServer.applyMiddleware({ app });
 
-server = https.createServer(
-  {
-    key: fs.readFileSync(`./ssl/server.key`),
-    cert: fs.readFileSync(`./ssl/server.crt`),
-  },
-  app
-);
-
-server.listen({ port: config.port }, () =>
-  console.log(
-    "🚀 Server ready at",
-    `http${config.ssl ? "s" : ""}://${config.hostname}:${config.port}${
-      apollo.graphqlPath
-    }`
+const sslServer = https
+  .createServer(
+    {
+      key: fs.readFileSync(`./ssl/server.key`),
+      cert: fs.readFileSync(`./ssl/server.crt`),
+    },
+    app
   )
-);
+  .listen({ port: config.port }, function () {
+    console.log(`Ready`);
+  });
