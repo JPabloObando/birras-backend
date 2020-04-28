@@ -1,6 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+
+import bodyParser from "body-parser";
+import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
+import { makeExecutableSchema } from "graphql-tools";
+
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
@@ -50,18 +55,13 @@ const start = () => {
 
   apollo.applyMiddleware({ app });
 
-  let server = null;
-  if (config.ssl) {
-    server = https.createServer(
-      {
-        key: fs.readFileSync(`./ssl/server.key`),
-        cert: fs.readFileSync(`./ssl/server.crt`),
-      },
-      app
-    );
-  } else {
-    server = http.createServer(app);
-  }
+  server = https.createServer(
+    {
+      key: fs.readFileSync(`./ssl/server.key`),
+      cert: fs.readFileSync(`./ssl/server.crt`),
+    },
+    app
+  );
 
   server.listen({ port: process.env.PORT || 4000 }, () =>
     console.log(`🚀 Server ready at ${config.url}`)
